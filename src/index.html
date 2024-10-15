@@ -1,0 +1,129 @@
+
+        <!doctype html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Voice Command Text-to-Speech</title>
+            <style>
+                /* General Styles */
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background-color: #2cc2e0;
+                    color: #333;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                }
+                .container {
+                    background-color: rgb(132, 227, 232);
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                    padding: 40px;
+                    max-width: 600px;
+                    text-align: center;
+                }
+                h1 {
+                    font-size: 2rem;
+                    color: #4CAF50;
+                }
+                p {
+                    font-size: 1.1rem;
+                    color: #666;
+                    margin-top: 10px;
+                }
+
+                /* Button Styles */
+                button {
+                    padding: 12px 24px;
+                    background-color: #4CAF50;
+                    color: white;
+                    border: none;
+                    border-radius: 30px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    transition: background-color 0.3s ease;
+                }
+                button:hover {
+                    background-color: #45a049;
+                }
+
+                /* Loader */
+                .loader {
+                    border: 12px solid #f3f3f3;
+                    border-top: 12px solid #4CAF50;
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    animation: spin 2s linear infinite;
+                    display: none; /* Hidden initially */
+                    margin: 20px auto;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+
+                /* Audio Player */
+                .audio-container {
+                    margin-top: 20px;
+                }
+                audio {
+                    width: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Voice Command Text-to-Speech</h1>
+                <p>Click below to speak and convert your speech to audio</p>
+                <form method="post" enctype="multipart/form-data" id="speechForm">
+                    <input type="hidden" name="text" id="text_input">
+                    <button type="button" onclick="startRecognition()">🎤 Start Voice Command</button>
+                    <div class="loader" id="loader"></div>
+                </form>
+            </div>
+
+            <script>
+                // JavaScript to capture voice input using Web Speech API
+                var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                function startRecognition() {
+                    document.getElementById('loader').style.display = 'block';  // Show loader
+                    recognition.start();
+                    console.log('Voice recognition started.');
+                }
+
+                recognition.onresult = function(event) {
+                    var speechResult = event.results[0][0].transcript;
+                    document.getElementById('text_input').value = speechResult;
+                    console.log('Result received: ' + speechResult);
+                    
+                    // Automatically submit the form after recognition
+                    document.getElementById('speechForm').submit();
+                }
+
+                recognition.onspeechend = function() {
+                    recognition.stop();
+                    console.log('Voice recognition ended.');
+                }
+
+                recognition.onerror = function(event) {
+                    document.getElementById('loader').style.display = 'none';  // Hide loader on error
+                    console.log('Error occurred in recognition: ' + event.error);
+                }
+
+                // Hide the loader when form is submitted
+                document.getElementById('speechForm').onsubmit = function() {
+                    document.getElementById('loader').style.display = 'block';  // Show loader
+                }
+            </script>
+        </body>
+        </html>
+  
