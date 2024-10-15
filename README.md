@@ -1,7 +1,5 @@
 # Flask Web App Starter
 
-A Flask starter template as per [these docs](https://flask.palletsprojects.com/en/3.0.x/quickstart/#a-minimal-application).
+**Introducing Your Personal AI Assistant**
 
-## Getting Started
-
-Previews should run automatically when starting a workspace.
+Need answers? Ask away! This voice assistant is your go-to source for information. Simply speak your query, and receive informative and helpful responses. 
